@@ -98,87 +98,82 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 
             // already have function values at left and right boundaries and midpoint
             // now evaluate function at one-qurter and three-quarter points
-            if (isempty(queue_p))
+        
+            // increment active intervals by 1
+            #pragma omp critical
             {
+                active_intervals++;
+            }
+
+            struct Interval interval;
+
+            if (!isempty(queue_p)) 
+            {
+                #pragma omp critical
+                {
+                    interval = dequeue(queue_p);
+                }
+            } else {
                 continue;
+            }   
+
+            double h = interval.right - interval.left;
+            double c = (interval.left + interval.right) / 2.0;
+            double d = (interval.left + c) / 2.0;
+            double e = (c + interval.right) / 2.0;
+            double fd = func(d);
+            double fe = func(e);
+
+            // calculate integral estimates using 3 and 5 points respectively
+            double q1 = h / 6.0 * (interval.f_left + 4.0 * interval.f_mid + interval.f_right);
+            double q2 = h / 12.0 * (interval.f_left + 4.0 * fd + 2.0 * interval.f_mid + 4.0 * fe + interval.f_right);
+
+            if ((fabs(q2 - q1) < interval.tol) || ((interval.right - interval.left) < 1.0e-12))
+            {
+                // tolerance is met, add to total
+                #pragma omp critical
+                {
+                    quad += q2 + (q2 - q1) / 15.0;
+                    // decrement active intervals by 1
+                    active_intervals--;
+                }
             }
             else
             {
-                // increment active intervals by 1
+                // increment active intervals by 2
                 #pragma omp critical
                 {
-                    active_intervals++;
+                    active_intervals += 2;
                 }
 
-                struct Interval interval;
+                // tolerance is not met, split interval in two and add both halves to queue
+                struct Interval i1, i2;
 
-                if (!isempty(queue_p)) 
+                i1.left = interval.left;
+                i1.right = c;
+                i1.tol = interval.tol;
+                i1.f_left = interval.f_left;
+                i1.f_mid = fd;
+                i1.f_right = interval.f_mid;
+
+                i2.left = c;
+                i2.right = interval.right;
+                i2.tol = interval.tol;
+                i2.f_left = interval.f_mid;
+                i2.f_mid = fe;
+                i2.f_right = interval.f_right;
+
+                #pragma omp critical
                 {
-                    #pragma omp critical
-                    {
-                        interval = dequeue(queue_p);
-                    }
-                } else {
-                    continue;
-                }   
-
-                double h = interval.right - interval.left;
-                double c = (interval.left + interval.right) / 2.0;
-                double d = (interval.left + c) / 2.0;
-                double e = (c + interval.right) / 2.0;
-                double fd = func(d);
-                double fe = func(e);
-
-                // calculate integral estimates using 3 and 5 points respectively
-                double q1 = h / 6.0 * (interval.f_left + 4.0 * interval.f_mid + interval.f_right);
-                double q2 = h / 12.0 * (interval.f_left + 4.0 * fd + 2.0 * interval.f_mid + 4.0 * fe + interval.f_right);
-
-                if ((fabs(q2 - q1) < interval.tol) || ((interval.right - interval.left) < 1.0e-12))
-                {
-                    // tolerance is met, add to total
-                    #pragma omp critical
-                    {
-                        quad += q2 + (q2 - q1) / 15.0;
-                        // decrement active intervals by 1
-                        active_intervals--;
-                    }
+                    enqueue(i1, queue_p);
                 }
-                else
+
+                #pragma omp critical
                 {
-                    // increment active intervals by 2
-                    #pragma omp critical
-                    {
-                        active_intervals += 2;
-                    }
-
-                    // tolerance is not met, split interval in two and add both halves to queue
-                    struct Interval i1, i2;
-
-                    i1.left = interval.left;
-                    i1.right = c;
-                    i1.tol = interval.tol;
-                    i1.f_left = interval.f_left;
-                    i1.f_mid = fd;
-                    i1.f_right = interval.f_mid;
-
-                    i2.left = c;
-                    i2.right = interval.right;
-                    i2.tol = interval.tol;
-                    i2.f_left = interval.f_mid;
-                    i2.f_mid = fe;
-                    i2.f_right = interval.f_right;
-
-                    #pragma omp critical
-                    {
-                        enqueue(i1, queue_p);
-                    }
-
-                    #pragma omp critical
-                    {
-                        enqueue(i2, queue_p);
-                    }
+                    enqueue(i2, queue_p);
                 }
             }
+            
 
         } while (!isempty(queue_p) && active_intervals > 0);
     }
