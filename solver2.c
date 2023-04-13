@@ -112,10 +112,15 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 
                 struct Interval interval;
 
-                #pragma omp critical
+                if (!isempty(queue_p)) 
                 {
-                    interval = dequeue(queue_p);
-                }
+                    #pragma omp critical
+                    {
+                        interval = dequeue(queue_p);
+                    }
+                } else {
+                    continue;
+                }   
 
                 double h = interval.right - interval.left;
                 double c = (interval.left + interval.right) / 2.0;
