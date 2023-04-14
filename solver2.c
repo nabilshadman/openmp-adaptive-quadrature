@@ -98,24 +98,32 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 
             // already have function values at left and right boundaries and midpoint
             // now evaluate function at one-qurter and three-quarter points
-        
-            // increment active intervals by 1
+
+            struct Interval interval;
+
+            #pragma omp critical
+            {
+                if (!isempty(queue_p)) 
+                {
+                    interval = dequeue(queue_p);
+                } else {
+                    interval.left = 5000.0;
+                    interval.right = 5000.0;
+                    interval.tol = 5000.0;
+                    interval.f_left = 5000.0;
+                    interval.f_mid = 5000.0;
+                    interval.f_right = 5000.0;
+                }
+            }
+
+            if (interval.left == 5000.0 && interval.right == 5000.0) {
+                continue;
+            }
+
             #pragma omp critical
             {
                 active_intervals++;
             }
-
-            struct Interval interval;
-
-            if (!isempty(queue_p)) 
-            {
-                #pragma omp critical
-                {
-                    interval = dequeue(queue_p);
-                }
-            } else {
-                continue;
-            }   
 
             double h = interval.right - interval.left;
             double c = (interval.left + interval.right) / 2.0;
@@ -140,11 +148,6 @@ double simpson(double (*func)(double), struct Queue *queue_p)
             }
             else
             {
-                // increment active intervals by 2
-                #pragma omp critical
-                {
-                    active_intervals += 2;
-                }
 
                 // tolerance is not met, split interval in two and add both halves to queue
                 struct Interval i1, i2;
@@ -166,15 +169,10 @@ double simpson(double (*func)(double), struct Queue *queue_p)
                 #pragma omp critical
                 {
                     enqueue(i1, queue_p);
-                }
-
-                #pragma omp critical
-                {
                     enqueue(i2, queue_p);
                 }
-            }
-            
 
+            }
         } while (!isempty(queue_p) && active_intervals > 0);
     }
 
