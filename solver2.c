@@ -101,18 +101,18 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 
             struct Interval interval;
 
+            interval.left = 5000.0;
+            interval.right = 5000.0;
+            interval.tol = 5000.0;
+            interval.f_left = 5000.0;
+            interval.f_mid = 5000.0;
+            interval.f_right = 5000.0;
+
             #pragma omp critical
             {
                 if (!isempty(queue_p)) 
                 {
                     interval = dequeue(queue_p);
-                } else {
-                    interval.left = 5000.0;
-                    interval.right = 5000.0;
-                    interval.tol = 5000.0;
-                    interval.f_left = 5000.0;
-                    interval.f_mid = 5000.0;
-                    interval.f_right = 5000.0;
                 }
             }
 
