@@ -1,0 +1,26 @@
+Loading intel-20.4/compilers
+  Loading requirement: intel-license gcc/8.2.0 intel-20.4/cc intel-20.4/fc
+Result = 6.019096e-03
+Time(s) = 25.215222
+Result = 6.019096e-03
+Time(s) = 14.279528
+Result = 6.019096e-03
+Time(s) = 10.153979
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.3
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.4
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.5
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.6
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.7
+Attempt to extract from empty queue - exiting
+srun: error: r1i0n19: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=4203668.8
