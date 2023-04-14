@@ -1,0 +1,20 @@
+Loading intel-20.4/compilers
+  Loading requirement: intel-license gcc/8.2.0 intel-20.4/cc intel-20.4/fc
+Result = 6.019096e-03
+Time(s) = 25.093802
+Result = 6.019096e-03
+Time(s) = 12.567568
+Result = 6.019096e-03
+Time(s) = 6.655958
+Result = 6.019096e-03
+Time(s) = 4.686381
+Result = 6.019096e-03
+Time(s) = 3.627666
+Result = 6.019096e-03
+Time(s) = 2.507696
+Result = 6.019096e-03
+Time(s) = 1.885700
+Result = 6.019096e-03
+Time(s) = 1.281737
+Result = 6.019096e-03
+Time(s) = 0.973395
