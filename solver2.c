@@ -85,22 +85,23 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 {
     double quad = 0.0;
 
-    // keep working until queue is empty AND there are no active intervals
+    // keep working until queue is empty and there are no active intervals
 
     // track active intervals in a shared variable
     int active_intervals = 0;
 
+    // enclose do while loop in parallel region and
+    // allow all threads to enqueue and dequeue intervals
     #pragma omp parallel default(none) \
     shared(queue_p, active_intervals, quad, func)
     {
         do
         {
-
             // already have function values at left and right boundaries and midpoint
             // now evaluate function at one-qurter and three-quarter points
-
             struct Interval interval;
 
+            // initialise interval with arbitrary values to check occurrence of dequeue later
             interval.left = 5000.0;
             interval.right = 5000.0;
             interval.tol = 5000.0;
@@ -108,18 +109,23 @@ double simpson(double (*func)(double), struct Queue *queue_p)
             interval.f_mid = 5000.0;
             interval.f_right = 5000.0;
 
+            // synchronise accesses to queue with critical section
             #pragma omp critical
             {
-                if (!isempty(queue_p)) 
+                if (!isempty(queue_p))
                 {
                     interval = dequeue(queue_p);
                 }
             }
 
-            if (interval.left == 5000.0 && interval.right == 5000.0) {
+            // check if dequeue occurred above or else continue to next iteration
+            if (interval.left == 5000.0 && interval.right == 5000.0)
+            {
                 continue;
             }
 
+            // increment active intervals by 1
+            // synchronise accesses to active intervals counter with critical section
             #pragma omp critical
             {
                 active_intervals++;
@@ -138,9 +144,10 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 
             if ((fabs(q2 - q1) < interval.tol) || ((interval.right - interval.left) < 1.0e-12))
             {
-                // tolerance is met, add to total
+                // synchronise accesses to quadrature and active intervals with critcal section
                 #pragma omp critical
                 {
+                    // tolerance is met, add to total
                     quad += q2 + (q2 - q1) / 15.0;
                     // decrement active intervals by 1
                     active_intervals--;
@@ -148,7 +155,6 @@ double simpson(double (*func)(double), struct Queue *queue_p)
             }
             else
             {
-
                 // tolerance is not met, split interval in two and add both halves to queue
                 struct Interval i1, i2;
 
@@ -166,12 +172,12 @@ double simpson(double (*func)(double), struct Queue *queue_p)
                 i2.f_mid = fe;
                 i2.f_right = interval.f_right;
 
+                // synchronise accesses to queue with critical section
                 #pragma omp critical
                 {
                     enqueue(i1, queue_p);
                     enqueue(i2, queue_p);
                 }
-
             }
         } while (!isempty(queue_p) && active_intervals > 0);
     }
@@ -185,12 +191,12 @@ int main(void)
     struct Queue queue;
     struct Interval whole;
 
-    // Initialise queue
+    // initialise queue
     init(&queue);
 
     double start = omp_get_wtime();
 
-    // Add initial interval to the queue
+    // add initial interval to the queue
     whole.left = 0.0;
     whole.right = 10.0;
     whole.tol = 1e-06;
@@ -200,7 +206,7 @@ int main(void)
 
     enqueue(whole, &queue);
 
-    // Call queue-based quadrature routine
+    // call queue-based quadrature routine
     double quad = simpson(func1, &queue);
     double time = omp_get_wtime() - start;
     printf("Result = %e\n", quad);

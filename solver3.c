@@ -85,12 +85,12 @@ double simpson(double (*func)(double), struct Queue *queue_p)
 {
     double quad = 0.0;
 
-    // keep working until queue is empty AND there are no active intervals
+    // keep working until queue is empty and there are no active intervals
 
     // track active intervals in a shared variable
     int active_intervals = 0;
 
-    // create locks to use instead of critical regions
+    // create locks to use for synchronisation
     omp_lock_t lock_queue_p;
     omp_lock_t lock_active_intervals;
     omp_lock_t lock_quad;
@@ -100,17 +100,18 @@ double simpson(double (*func)(double), struct Queue *queue_p)
     omp_init_lock(&lock_active_intervals);
     omp_init_lock(&lock_quad);
 
+    // enclose do while loop in parallel region and
+    // allow all threads to enqueue and dequeue intervals
     #pragma omp parallel default(none) \
     shared(queue_p, active_intervals, quad, func, lock_queue_p, lock_active_intervals, lock_quad)
     {
         do
         {
-
             // already have function values at left and right boundaries and midpoint
             // now evaluate function at one-qurter and three-quarter points
-
             struct Interval interval;
 
+            // initialise interval with arbitrary values to check occurrence of dequeue later
             interval.left = 5000.0;
             interval.right = 5000.0;
             interval.tol = 5000.0;
@@ -118,18 +119,22 @@ double simpson(double (*func)(double), struct Queue *queue_p)
             interval.f_mid = 5000.0;
             interval.f_right = 5000.0;
 
+            // synchronise accesses to queue with lock
             omp_set_lock(&lock_queue_p);
-            if (!isempty(queue_p)) 
+            if (!isempty(queue_p))
             {
                 interval = dequeue(queue_p);
             }
             omp_unset_lock(&lock_queue_p);
 
-            if (interval.left == 5000.0 && interval.right == 5000.0) {
+            // check if dequeue occurred above or else continue to next iteration
+            if (interval.left == 5000.0 && interval.right == 5000.0)
+            {
                 continue;
             }
 
             // increment active intervals
+            // synchronise accesses to active intervals counter with lock
             omp_set_lock(&lock_active_intervals);
             active_intervals++;
             omp_unset_lock(&lock_active_intervals);
@@ -148,15 +153,16 @@ double simpson(double (*func)(double), struct Queue *queue_p)
             if ((fabs(q2 - q1) < interval.tol) || ((interval.right - interval.left) < 1.0e-12))
             {
                 // tolerance is met, add to total
+                // synchronise accesses to quadrature with lock
                 omp_set_lock(&lock_quad);
                 quad += q2 + (q2 - q1) / 15.0;
                 omp_unset_lock(&lock_quad);
 
                 // decrement active intervals by 1
+                // synchronise accesses to active intervals with lock
                 omp_set_lock(&lock_active_intervals);
                 active_intervals--;
                 omp_unset_lock(&lock_active_intervals);
-                
             }
             else
             {
@@ -177,11 +183,11 @@ double simpson(double (*func)(double), struct Queue *queue_p)
                 i2.f_mid = fe;
                 i2.f_right = interval.f_right;
 
+                // synchronise accesses to queue with lock
                 omp_set_lock(&lock_queue_p);
                 enqueue(i1, queue_p);
                 enqueue(i2, queue_p);
                 omp_unset_lock(&lock_queue_p);
-
             }
         } while (!isempty(queue_p) && active_intervals > 0);
     }
@@ -200,12 +206,12 @@ int main(void)
     struct Queue queue;
     struct Interval whole;
 
-    // Initialise queue
+    // initialise queue
     init(&queue);
 
     double start = omp_get_wtime();
 
-    // Add initial interval to the queue
+    // add initial interval to the queue
     whole.left = 0.0;
     whole.right = 10.0;
     whole.tol = 1e-06;
@@ -215,7 +221,7 @@ int main(void)
 
     enqueue(whole, &queue);
 
-    // Call queue-based quadrature routine
+    // call queue-based quadrature routine
     double quad = simpson(func1, &queue);
     double time = omp_get_wtime() - start;
     printf("Result = %e\n", quad);
