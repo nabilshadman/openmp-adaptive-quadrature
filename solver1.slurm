@@ -2,7 +2,7 @@
 
 # Slurm job options (name, compute nodes, job time)
 #SBATCH --job-name=solver1
-#SBATCH --time=0:20:0
+#SBATCH --time=0:30:0
 #SBATCH --exclusive
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
@@ -16,8 +16,8 @@
 #SBATCH --qos=standard
 
 # Load appropriate module
-module load intel-20.4/compilers
-#module load gcc/10.2.0
+#module load intel-20.4/compilers
+module load gcc/10.2.0
 
 # Change to the submission directory
 cd $SLURM_SUBMIT_DIR
