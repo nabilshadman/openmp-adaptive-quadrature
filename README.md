@@ -75,6 +75,11 @@ To compile any specific solver version instead (e.g. Solver 1),
 type in command line:  
 ```make solver1```  
 
+By default, the **Makefile** is configured to compile the code using the **GNU compiler**.  
+To compile using the **Intel compiler** instead, open the Makefile in any supported code  
+editor (e.g. Vim), and comment the GNU compiler options and remove the comments from the  
+Intel compiler options.  
+
 
 # 4. Execution  
 In this section, we discuss how to run the code on both the frontend (i.e login) and backend  
