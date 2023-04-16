@@ -1,15 +1,17 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
 The goal of this project is to implement two versions of a divide-and-conquer algorithm in **OpenMP**.  
 
-We are provided with two codes which implement the same algorithm in two different ways. The  
-algorithm is an **adaptive quadrature** method that computes the integral of a function on a closed  
-interval using a divide-and-conquer method. The algorithm starts by applying two quadrature  
-rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference between  
-the integral estimates from the two rules is small enough (or the interval is too short),  
-the result is added to the total integral estimate. If it is not small enough, the interval is  
-split into two equal halves, and the method is applied recursively to each half. In the case  
-supplied, evaluating the function requires the solution of an ODE (ordinary differential equation)  
-which is relatively expensive in time.  
+**Tech Stack:** C, OpenMP, Make, Slurm  
+
+We are provided with two codes (in the C programming langauge) which implement the same algorithm in  
+two different ways. The algorithm is an **adaptive quadrature** method that computes the integral of  
+a function on a closed interval using a divide-and-conquer method. The algorithm starts by applying  
+two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference  
+between the integral estimates from the two rules is small enough (or the interval is too short),  
+the result is added to the total integral estimate. If it is not small enough, the interval is split  
+into two equal halves, and the method is applied recursively to each half. In the case supplied,  
+evaluating the function requires the solution of an ODE (ordinary differential equation) which is  
+relatively expensive in time.  
 
 As supplied in the **serial** folder, the sequential code in **solver1.c** implements this algorithm  
 using recursive function calls. The sequential code in **section2.c** implements the algorithm using  
@@ -92,7 +94,7 @@ variable:
 (2) Run the specific executable (e.g. Solver 1):  
 ```./solver1```  
 
-**4.3 To run the code on the backend node:**  
+**4.2 To run the code on the backend node:**  
 (1) For running the specific executable (e.g. Solver1), type in command line:  
 ```sbatch solver1.slurm```  
 
@@ -110,7 +112,7 @@ By default, the batch scripts are set to use a number of threads (i.e. 1, 2, 4, 
 and runs each thread configuration 3 times in a for loop. You can change this setting as well   
 with your desired number of threads, and the amount of times you want to run each configuration.   
 
-**4.4 Additional information**  
+**4.3 Additional information**  
 We have included the results (i.e. slurm output files) from our experiments in the folder  
 titled **miscellaneous**. Also, the folder includes an Excel file (called **coursework2_data.xlsx**)   
 that includes the timing data of the experiments and speedup graphs. The timing data is mapped  
