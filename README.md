@@ -1,8 +1,8 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
-The goal of this project is to implement two versions of a divide-and-conquer algorithm in OpenMP.  
+The goal of this project is to implement two versions of a divide-and-conquer algorithm in **OpenMP**.  
 
 We are provided with two codes which implement the same algorithm in two different ways. The  
-algorithm is an adaptive quadrature method that computes the integral of a function on a closed  
+algorithm is an **adaptive quadrature** method that computes the integral of a function on a closed  
 interval using a divide-and-conquer method. The algorithm starts by applying two quadrature  
 rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference between  
 the integral estimates from the two rules is small enough (or the interval is too short),  
@@ -68,11 +68,11 @@ If using **Intel 20.4 compiler**, type in command line:
 ```module load intel-20.4/compilers```  
 
 **3.2 To compile the code:**   
-(1) Build the executables. Type in command line:  
+(1) Build all the executables. Type in command line:  
 ```make```  
 
-**3.3 To compile any specific solver version:**  
-(1) Build the executable (e.g. Solver 1). Type in command line:  
+To compile any specific solver version instead (e.g. Solver 1),  
+type in command line:  
 ```make solver1```  
 
 
@@ -95,7 +95,7 @@ variable:
 This command will send the solver executable to the Slurm job scheduler,  
 where the code will be run as soon as resources are available. The command will  
 return a <job_id>. When the code is run, the output will be printed to a file titled  
-slurm-<job_id>.out.  
+**slurm-<job_id>.out**.  
 
 By default, the slurm batch scripts are configured to load **GNU 10.2 compiler** on the  
 backend node of Cirrus. To use **Intel 20.4 compiler**, open the batch script in any supported  
