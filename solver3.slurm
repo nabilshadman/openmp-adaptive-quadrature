@@ -28,7 +28,7 @@ for threads in 1 2 4 6 8 12 16 24 32
 do 
 	export OMP_NUM_THREADS=$threads 
 	srun --cpu-bind=cores ./solver3
-	srun --cpu-bind=cores ./solver1
-	srun --cpu-bind=cores ./solver1
+	srun --cpu-bind=cores ./solver3
+	srun --cpu-bind=cores ./solver3
 done
 
