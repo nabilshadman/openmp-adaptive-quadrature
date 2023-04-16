@@ -1,11 +1,15 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
 The goal of this project is to implement two versions of a divide-and-conquer algorithm in OpenMP.  
 
-We are provided with two codes which implement the same algorithm in two different ways. The algorithm   
-is an adaptive quadrature method that computes the integral of a function on a closed interval using a  divide-and-conquer method. The algorithm starts by applying two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference between the integral estimates from  the two   
-rules is small enough (or the interval is too short), the result is added to the total integral estimate.      
-If it is not small enough, the interval is split into two equal halves, and the method is applied  
-recursively to each half. In the case supplied, evaluating the function requires the solution of an ODE  (ordinary differential equation) which is relatively expensive in time.   
+We are provided with two codes which implement the same algorithm in two different ways. The  
+algorithm is an adaptive quadrature method that computes the integral of a function on a closed  
+interval using a divide-and-conquer method. The algorithm starts by applying two quadrature  
+rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference between  
+the integral estimates from the two rules is small enough (or the interval is too short),  
+the result is added to the total integral estimate. If it is not small enough, the interval is  
+split into two equal halves, and the method is applied recursively to each half. In the case  
+supplied, evaluating the function requires the solution of an ODE (ordinary differential equation)  
+which is relatively expensive in time.  
 
 As supplied in the **serial** folder, the sequential code in **solver1.c** implements this algorithm  
 using recursive function calls. The sequential code in **section2.c** implements the algorithm using  
@@ -88,6 +92,11 @@ variable:
 (1) For running the specific executable (e.g. Solver1), type in command line:  
 ```sbatch solver1.slurm```  
 
+This command will send the solver executable to the Slurm job scheduler,  
+where the code will be run as soon as resources are available. The command will  
+return a <job_id>. When the code is run, the output will be printed to a file titled  
+slurm-<job_id>.out.  
+
 By default, the slurm batch scripts are configured to load **GNU 10.2 compiler** on the  
 backend node of Cirrus. To use **Intel 20.4 compiler**, open the batch script in any supported  
 code editor (e.g. Vim), and comment the ```module load gcc/10.2.0``` command, and remove the    
@@ -98,4 +107,9 @@ and runs each thread configuration 3 times in a for loop. You can change this se
 with your desired number of threads, and the amount of times you want to run each configuration.   
 
 **4.4 Additional information**  
+We have included the results (i.e. slurm output files) from our experiments in the folder  
+titled **miscellaneous**. Also, the folder includes an Excel file (called **coursework2_data.xlsx**)   
+that includes the timing data of the experiments and speedup graphs. The timing data is mapped to  
+the slurm output file ID to reference for any future investigations.  
+
 For more information on running codes on the Cirrus HPC system, please visit this [page](https://cirrus.readthedocs.io/en/main/user-guide/batch.html).  
