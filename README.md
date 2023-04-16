@@ -3,8 +3,8 @@ The goal of this project is to implement two versions of a divide-and-conquer al
 
 **Tech Stack:** C, OpenMP, Make, Slurm  
 
-We are provided with two codes (in the C programming langauge) which implement the same algorithm in  
-two different ways. The algorithm is an **adaptive quadrature** method that computes the integral of  
+We are provided with two codes (in the C programming langauge) which implement the same algorithm  
+in two different ways. The algorithm is an **adaptive quadrature** method that computes the integral of  
 a function on a closed interval using a divide-and-conquer method. The algorithm starts by applying  
 two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference  
 between the integral estimates from the two rules is small enough (or the interval is too short),  
