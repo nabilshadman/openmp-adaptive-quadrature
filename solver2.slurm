@@ -16,8 +16,8 @@
 #SBATCH --qos=standard
 
 # Load appropriate module
-module load intel-20.4/compilers
-#module load gcc/10.2.0
+#module load intel-20.4/compilers
+module load gcc/10.2.0
 
 # Change to the submission directory
 cd $SLURM_SUBMIT_DIR
