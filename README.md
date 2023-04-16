@@ -71,14 +71,13 @@ If using **Intel 20.4 compiler**, type in command line:
 (1) Build all the executables. Type in command line:  
 ```make```  
 
-To compile any specific solver version instead (e.g. Solver 1),  
-type in command line:  
+To compile any specific solver version instead (e.g. Solver 1), type in command line:  
 ```make solver1```  
 
 By default, the **Makefile** is configured to compile the code using the **GNU compiler**.  
 To compile using the **Intel compiler** instead, open the Makefile in any supported code  
-editor (e.g. Vim), and comment the GNU compiler options and remove the comments from the  
-Intel compiler options.  
+editor (e.g. Vim), and comment the GNU compiler options and remove the comments from  
+the Intel compiler options.  
 
 
 # 4. Execution  
@@ -114,7 +113,7 @@ with your desired number of threads, and the amount of times you want to run eac
 **4.4 Additional information**  
 We have included the results (i.e. slurm output files) from our experiments in the folder  
 titled **miscellaneous**. Also, the folder includes an Excel file (called **coursework2_data.xlsx**)   
-that includes the timing data of the experiments and speedup graphs. The timing data is mapped to  
-the slurm output file ID to reference for any future investigations.  
+that includes the timing data of the experiments and speedup graphs. The timing data is mapped  
+to the slurm output file ID to reference for any future investigations.  
 
 For more information on running codes on the Cirrus HPC system, please visit this [page](https://cirrus.readthedocs.io/en/main/user-guide/batch.html).  
