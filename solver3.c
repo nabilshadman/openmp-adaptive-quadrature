@@ -100,10 +100,14 @@ double simpson(double (*func)(double), struct Queue *queue_p)
     omp_init_lock(&lock_active_intervals);
     omp_init_lock(&lock_quad);
 
+    // track terminal condition of do while loop with boolean
+    int condition = 0;
+
     // enclose do while loop in parallel region and
     // allow all threads to enqueue and dequeue intervals
     #pragma omp parallel default(none) \
-    shared(queue_p, active_intervals, quad, func, lock_queue_p, lock_active_intervals, lock_quad)
+    shared(queue_p, active_intervals, quad, func, lock_queue_p, lock_active_intervals, lock_quad) \
+    private(condition)
     {
         do
         {
@@ -189,7 +193,15 @@ double simpson(double (*func)(double), struct Queue *queue_p)
                 enqueue(i2, queue_p);
                 omp_unset_lock(&lock_queue_p);
             }
-        } while (!isempty(queue_p) && active_intervals > 0);
+
+            // update condition for next iteration
+            omp_set_lock(&lock_queue_p);
+            omp_set_lock(&lock_active_intervals);
+            condition = !isempty(queue_p) && active_intervals > 0;
+            omp_unset_lock(&lock_queue_p);
+            omp_unset_lock(&lock_active_intervals);
+
+        } while (condition);
     }
 
     // destroy locks
