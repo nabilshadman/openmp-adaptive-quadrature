@@ -10,7 +10,7 @@ two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole inter
 between the integral estimates from the two rules is small enough (or the interval is too short),  
 the result is added to the total integral estimate. If it is not small enough, the interval is split  
 into two equal halves, and the method is applied recursively to each half. In the case supplied,  
-evaluating the function requires the solution of an ODE (ordinary differential equation) which is  
+evaluating the function requires the solution of an ODE (ordinary differential equation), which is  
 relatively expensive in time.  
 
 As supplied in the **serial** folder, the sequential code in **solver1.c** implements this algorithm  
@@ -34,16 +34,16 @@ The file contains the code for evaluating the function. We treat this file as a 
 and do not modify any of it.  
 
 **solver1.c**  
-This code parallelises the sequential code in the serial folder (also called **solver1.c**)  
-using recursive function calls. We use OpenMP task constructs to parallelise this version.  
+This code parallelises the sequential code in the serial folder (also called **solver1.c**),    
+which uses recursive function calls. We use OpenMP task constructs to parallelise this version.  
 
 **solver2.c**  
-This code parallelises the sequential code in the serial folder (also called **solver2.c**)  
-using using a LIFO (last-in-first-out) queue.  
+This code parallelises the sequential code in the serial folder (also called **solver2.c**),    
+which uses a LIFO (last-in-first-out) queue.  
 
 We parallelise this version without using task constructs. We enclose the do while loop  
 in an OpenMP parallel region and allow all the threads to enqueue and dequeue intervals.  
-We synchronise the accesses to the queue with OpenMP critical sections.  
+We synchronise accesses to the queue with OpenMP critical sections.  
 
 Note that the termination condition for the while loop (an empty queue) is not sufficient  
 in the parallel version, as the queue might be empty, but another thread may subsequently  
@@ -51,16 +51,16 @@ enqueue new intervals. The do while loop in the parallel version terminates only
 queue is empty and there are no intervals currently being processed.  
 
 **solver3.c**  
-This code parallelises the sequential code in the serial folder (called **solver2.c**) using  
-a LIFO (last-in-first-out) queue.  
+This code parallelises the sequential code in the serial folder (called **solver2.c**),    
+which uses a LIFO (last-in-first-out) queue.  
 
 The difference between this version and the parallelised **solver2.c** version in the top folder  
-is that instead of using OpenMP critical sections, we use OpenMP lock routines to synchronise the  
+is that instead of using OpenMP critical sections, we use OpenMP lock routines to synchronise    
 accesses to the queue.  
 
 
 # 3. Compilation  
-In this section, we discuss how to compile the Adaptive Quadrature code on the Cirrus HPC system.   
+In this section, we discuss how to compile the Adaptive Quadrature application on the Cirrus HPC system.   
 
 **3.1 Load relevant modules first:**  
 If using **GNU 10.2 compiler**, type in command line:  
@@ -87,8 +87,8 @@ In this section, we discuss how to run the code on both the frontend (i.e login)
 (i.e. compute) nodes of Cirrus.   
 
 **4.1 To run the code on the login node:**    
-(1) Set the number of threads (e.g. 4 threads) to use in the **OMP_NUM_THREADS** environment   
-variable:  
+(1) Set the number of threads (e.g. 4 threads) you want to use in the **OMP_NUM_THREADS**  
+environment variable:  
 ```export OMP_NUM_THREADS=4```  
 
 (2) Run the specific executable (e.g. Solver 1):  
@@ -114,8 +114,8 @@ with your desired number of threads, and the amount of times you want to run eac
 
 **4.3 Additional information**  
 We have included the results (i.e. slurm output files) from our experiments in the folder  
-titled **miscellaneous**. Also, the folder includes an Excel file (called **coursework2_data.xlsx**)   
+called **miscellaneous**. Also, the folder includes an Excel file (called **coursework2_data.xlsx**)   
 that includes the timing data of the experiments and speedup graphs. The timing data is mapped  
-to the slurm output file ID to reference for any future investigations.  
+to the slurm output file ID to reference for any future studies.  
 
 For more information on running codes on the Cirrus HPC system, please visit this [page](https://cirrus.readthedocs.io/en/main/user-guide/batch.html).  
