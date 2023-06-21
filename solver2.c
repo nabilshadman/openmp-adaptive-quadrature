@@ -90,10 +90,14 @@ double simpson(double (*func)(double), struct Queue *queue_p)
     // track active intervals in a shared variable
     int active_intervals = 0;
 
+    // track terminal condition of do while loop with boolean
+    int condition = 0;
+
     // enclose do while loop in parallel region and
     // allow all threads to enqueue and dequeue intervals
     #pragma omp parallel default(none) \
-    shared(queue_p, active_intervals, quad, func)
+    shared(queue_p, active_intervals, quad, func) \
+    private(condition)
     {
         do
         {
@@ -179,7 +183,14 @@ double simpson(double (*func)(double), struct Queue *queue_p)
                     enqueue(i2, queue_p);
                 }
             }
-        } while (!isempty(queue_p) && active_intervals > 0);
+        
+            // update condition for next iteration
+            #pragma omp critical 
+            {
+                condition = !isempty(queue_p) && active_intervals > 0;
+            }
+            
+        } while (condition);
     }
 
     return quad;
