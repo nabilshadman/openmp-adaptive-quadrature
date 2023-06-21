@@ -55,10 +55,12 @@ double simpson(double (*func)(double), struct Interval interval)
         i2.f_right = interval.f_right;
 
         // represent recursive calls to simpson() as tasks
-        #pragma omp task shared(quad1)
+        #pragma omp task default(none) \
+        shared(quad1, func, i1)
         quad1 = simpson(func, i1);
 
-        #pragma omp task shared(quad2)
+        #pragma omp task default(none) \
+        shared(quad2, func, i2)
         quad2 = simpson(func, i2);
 
         #pragma omp taskwait
@@ -84,7 +86,8 @@ int main(void)
 
     // call recursive quadrature routine
     // create parallel region using orphaned directives
-    #pragma omp parallel
+    #pragma omp parallel default(none) \
+    shared(quad, whole)
     {
         // only master thread packages tasks
         #pragma omp master 
