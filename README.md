@@ -1,5 +1,5 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
-The goal of this project is to implement two versions of a divide-and-conquer algorithm in **OpenMP**.  
+The goal of this study is to implement two versions of a divide-and-conquer algorithm in **OpenMP**.  
 
 **Tech Stack:** C, OpenMP, Make, Slurm  
 
@@ -119,3 +119,9 @@ that includes the timing data of the experiments and speedup graphs. The timing 
 to the slurm output file ID to reference for any future studies.  
 
 For more information on running codes on the Cirrus HPC system, please visit this [page](https://cirrus.readthedocs.io/en/main/user-guide/batch.html).  
+
+# 5. Report  
+We provide a [report](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/report/parallel_adaptive_quadrature_openmp_report.pdf) associated with this repository where we discuss the general algorithm, the  
+parallel implementations of the algorithm, the hardware and software environments where we test the    
+implementations for correctness and for performance, the performance analysis of the implementations,  
+and the conclusions of the study.  
