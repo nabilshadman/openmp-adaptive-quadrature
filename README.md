@@ -1,10 +1,10 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
-The goal of this study is to implement two versions of a divide-and-conquer algorithm in **OpenMP**.  
+The goal of this study is to implement two versions of a divide-and-conquer algorithm in [OpenMP](https://www.openmp.org/).  
 
-**Tech Stack:** C, OpenMP, Make, Slurm  
+**Tech stack:** C, OpenMP, Make, Slurm  
 
 We are provided with two codes (in the C programming langauge) which implement the same algorithm  
-in two different ways. The algorithm is an **adaptive quadrature** method that computes the integral of  
+in two different ways. The algorithm is an [adaptive quadrature](https://en.wikipedia.org/wiki/Adaptive_quadrature) method that computes the integral of  
 a function on a closed interval using a divide-and-conquer method. The algorithm starts by applying  
 two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference  
 between the integral estimates from the two rules is small enough (or the interval is too short),  
@@ -13,8 +13,8 @@ into two equal halves, and the method is applied recursively to each half. In th
 evaluating the function requires the solution of an ODE (ordinary differential equation), which is  
 relatively expensive in time.  
 
-As supplied in the **serial** folder, the sequential code in **solver1.c** implements this algorithm  
-using recursive function calls. The sequential code in **section2.c** implements the algorithm using  
+As supplied in the [serial](https://github.com/nabilshadman/openmp-adaptive-quadrature/tree/main/serial) folder, the sequential code in [solver1.c](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/serial/solver1.c) implements this algorithm  
+using recursive function calls. The sequential code in [section2.c](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/serial/solver2.c) implements the algorithm using  
 a LIFO (last-in-first-out) queue.    
 
 The **solver1.c**, **solver2.c**, and **solver3.c** files in the top folder are parallelised versions of  
@@ -60,7 +60,7 @@ accesses to the queue.
 
 
 # 3. Compilation  
-In this section, we discuss how to compile the Adaptive Quadrature application on the Cirrus HPC system.   
+In this section, we discuss how to compile the Adaptive Quadrature application on the [Cirrus](https://www.epcc.ed.ac.uk/hpc-services/cirrus) HPC system.   
 
 **3.1 Load relevant modules first:**  
 If using **GNU 10.2 compiler**, type in command line:  
