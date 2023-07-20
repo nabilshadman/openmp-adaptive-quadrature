@@ -1,9 +1,9 @@
 # 1. Parallel Implementations of Adaptive Quadrature using OpenMP  
-The goal of this study is to implement two versions of a divide-and-conquer algorithm in [OpenMP](https://www.openmp.org/).  
+The goal of this [study](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/report/parallel_adaptive_quadrature_openmp_report.pdf) is to **implement** two versions of a divide-and-conquer algorithm in [OpenMP](https://www.openmp.org/).  
 
-**Tech stack:** C, OpenMP, Make, Slurm  
+**Tech Stack:** C, OpenMP, Make, Slurm  
 
-We are provided with two codes (in the C programming langauge) which implement the same algorithm  
+We are provided with **two codes** (in the C programming langauge) which implement the same algorithm  
 in two different ways. The algorithm is an [adaptive quadrature](https://en.wikipedia.org/wiki/Adaptive_quadrature) method that computes the integral of  
 a function on a closed interval using a divide-and-conquer method. The algorithm starts by applying  
 two quadrature rules (3-point and 5-point  Simpson’s rules) to the whole interval. If the difference  
@@ -13,16 +13,16 @@ into two equal halves, and the method is applied recursively to each half. In th
 evaluating the function requires the solution of an ODE (ordinary differential equation), which is  
 relatively expensive in time.  
 
-As supplied in the [serial](https://github.com/nabilshadman/openmp-adaptive-quadrature/tree/main/serial) folder, the sequential code in [solver1.c](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/serial/solver1.c) implements this algorithm  
+As supplied in the [serial](https://github.com/nabilshadman/openmp-adaptive-quadrature/tree/main/serial) folder, the **sequential** code in [solver1.c](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/serial/solver1.c) implements this algorithm  
 using recursive function calls. The sequential code in [section2.c](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/serial/solver2.c) implements the algorithm using  
 a LIFO (last-in-first-out) queue.    
 
-The **solver1.c**, **solver2.c**, and **solver3.c** files in the top folder are parallelised versions of  
+The **solver1.c**, **solver2.c**, and **solver3.c** files in the top folder are **parallelised** versions of  
 the suplied sequential programs.  
 
 
 # 2. Header and Source Files  
-In this section, we describe the header and source files of the Adaptive Quadrature application.  
+In this section, we describe the **header** and **source** files of the Adaptive Quadrature application.  
 
 **function.h**  
 This is the header file for the simulation, which contains the function  
@@ -60,7 +60,7 @@ accesses to the queue.
 
 
 # 3. Compilation  
-In this section, we discuss how to compile the Adaptive Quadrature application on the [Cirrus](https://www.epcc.ed.ac.uk/hpc-services/cirrus) HPC system.   
+In this section, we discuss how to **compile** the Adaptive Quadrature application on the [Cirrus](https://www.epcc.ed.ac.uk/hpc-services/cirrus) HPC system.   
 
 **3.1 Load relevant modules first:**  
 If using **GNU 10.2 compiler**, type in command line:  
@@ -83,8 +83,8 @@ the Intel compiler options.
 
 
 # 4. Execution  
-In this section, we discuss how to run the code on both the frontend (i.e login) and backend  
-(i.e. compute) nodes of Cirrus.   
+In this section, we discuss how to **run** the code on both the frontend (i.e login) and backend  
+(i.e. compute) nodes of [Cirrus](https://www.epcc.ed.ac.uk/hpc-services/cirrus).   
 
 **4.1 To run the code on the login node:**    
 (1) Set the number of threads (e.g. 4 threads) you want to use in the **OMP_NUM_THREADS**  
@@ -98,7 +98,7 @@ environment variable:
 (1) For running the specific executable (e.g. Solver1), type in command line:  
 ```sbatch solver1.slurm```  
 
-This command will send the solver executable to the Slurm job scheduler,  
+This command will send the solver executable to the **Slurm** job scheduler,  
 where the code will be run as soon as resources are available. The command will  
 return a <job_id>. When the code is run, the output will be printed to a file titled  
 **slurm-<job_id>.out**.  
@@ -108,7 +108,7 @@ backend node of Cirrus. To use **Intel 20.4 compiler**, open the batch script in
 code editor (e.g. Vim), and comment the ```module load gcc/10.2.0``` command, and remove the    
 comment from the ```module load intel-20.4/compilers``` command.  
 
-By default, the batch scripts are set to use a number of threads (i.e. 1, 2, 4, 6, 8, 12, 16, 24, 32),  
+By default, the batch scripts are set to use a number of **threads** (i.e. 1, 2, 4, 6, 8, 12, 16, 24, 32),  
 and runs each thread configuration 3 times in a for loop. You can change this setting as well   
 with your desired number of threads, and the amount of times you want to run each configuration.   
 
@@ -121,7 +121,7 @@ to the slurm output file ID to reference for any future studies.
 For more information on running codes on the Cirrus HPC system, please visit this [page](https://cirrus.readthedocs.io/en/main/user-guide/batch.html).  
 
 # 5. Report  
-We provide a [report](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/report/parallel_adaptive_quadrature_openmp_report.pdf) associated with this repository where we discuss the general algorithm, the  
+We provide a [report](https://github.com/nabilshadman/openmp-adaptive-quadrature/blob/main/report/parallel_adaptive_quadrature_openmp_report.pdf) associated with this repository where we **discuss** the general algorithm, the  
 parallel implementations of the algorithm, the hardware and software environments where we test the    
 implementations for correctness and for performance, the performance analysis of the implementations,  
 and the conclusions of the study.  
